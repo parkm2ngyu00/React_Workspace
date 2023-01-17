@@ -13,6 +13,7 @@ import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import Coins from "./Coins";
 
 const Title = styled.h1`
   font-size: 30px;
@@ -31,10 +32,11 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
   height: 15vh;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `;
 
 const Overview = styled.div`
@@ -80,6 +82,16 @@ const Tab = styled.span<{ isActive: boolean }>`
     props.isActive ? props.theme.accentColor : props.theme.textColor};
   a {
     display: block;
+  }
+`;
+
+const Back = styled.div`
+  position: absolute;
+  left: 10px;
+  top: 44px;
+  font-size: 25px;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
   }
 `;
 
@@ -163,6 +175,9 @@ function Coin() {
   return (
     <Container>
       <Header>
+        <Link to={`/`}>
+          <Back>&#8592;</Back>
+        </Link>
         <Title>{infoData?.name || "loading ..."}</Title>
       </Header>
       {loading ? (
@@ -209,7 +224,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/${coinId}/chart`}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
